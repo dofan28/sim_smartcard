@@ -1,12 +1,9 @@
 <?php
 
-if (!isset($_SESSION['login'])) {
-    header("Location: /login");
-    exit;
-}
+
 
 $transactionId = $matches[1];
-$transactions = getStudentById($db, $transactionId);
+$transaction = getTransactionById($db, $transactionId);
 ?>
 
 
@@ -15,58 +12,81 @@ $transactions = getStudentById($db, $transactionId);
 <main class="container px-6 py-12 mx-auto">
     <!-- Header -->
     <header class="mb-8">
-        <h1 class="text-3xl font-bold text-blue-900">Detail Data Siswa</h1>
+        <h1 class="text-3xl font-semibold tracking-wide text-blue-900 font-poppins">Detail Data Rekaptulasi Kehadiran Siswa</h1>
+        <p class="mt-2 text-sm text-gray-700 font-poppins">Berikut adalah informasi lengkap dari rekapulasi kehadiran siswa yang dipilih.</p>
     </header>
 
     <!-- Detail Siswa -->
     <div class="p-6 bg-white rounded-md shadow-md">
-        <!-- Foto Profil Siswa (opsional) -->
-        <div class="flex items-center mb-6">
-            <img src="/public/assets/images/default-avatar.png"
-                alt="Foto Siswa"
-                class="w-24 h-24 border border-gray-300 rounded-full">
-            <div class="ml-6">
-                <h2 class="text-2xl font-semibold text-blue-700" id="nama-siswa"><?= htmlspecialchars($student['full_name']) ?></h2>
-                <p class="text-gray-500" id="id-siswa">UID: <?= htmlspecialchars($student['uid']) ?></p>
-            </div>
-        </div>
-
-        <!-- Tabel Detail -->
-        <table class="w-full border border-collapse border-gray-300">
+        <h2 class="mb-6 text-3xl font-semibold text-blue-800 uppercase  font-poppins" id="nama-siswa">Data Siswa</h2>
+        <table class="w-full border border-collapse border-gray-300 rounded-md">
             <tbody>
                 <tr class="border-b border-gray-300">
-                    <td class="px-4 py-2 font-semibold text-gray-700">Nama</td>
-                    <td class="px-4 py-2 text-gray-600" id="nama"><?= htmlspecialchars($student['full_name']) ?></td>
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Nama:</td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['full_name']) ?></td>
                 </tr>
                 <tr class="border-b border-gray-300">
-                    <td class="px-4 py-2 font-semibold text-gray-700">Kelas</td>
-                    <td class="px-4 py-2 text-gray-600" id="kelas"><?= htmlspecialchars($student['class']) ?></td>
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">UID:</td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['uid']) ?></td>
                 </tr>
                 <tr class="border-b border-gray-300">
-                    <td class="px-4 py-2 font-semibold text-gray-700">Alamat</td>
-                    <td class="px-4 py-2 text-gray-600" id="alamat"><?= htmlspecialchars($student['address']) ?></td>
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">NIS:</td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['nis']) ?></td>
+                </tr>
+                <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Kelas:</td>
+                    <td class="px-4 py-2 text-gray-600" id="kelas"><?= htmlspecialchars($transaction['class']) ?></td>
+                </tr>
+                <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Alamat:</td>
+                    <td class="px-4 py-2 text-gray-600" id="alamat"><?= htmlspecialchars($transaction['address']) ?></td>
+                </tr>
+                <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Status:</td>
+                <td class="px-4 py-2 text-gray-600" id="alamat">
+                    <?php if (htmlspecialchars($transaction['status']) == 'active'): ?>
+                        Aktif
+                    <?php elseif (htmlspecialchars($transaction['status']) == 'inactive'): ?>
+                        Tidak Aktif
+                    <?php endif ?>
+                    </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="p-6 mt-6 bg-white rounded-md shadow-md">
+        <h2 class="mb-6 text-3xl font-semibold text-blue-800 uppercase  font-poppins" id="nama-siswa">Data Rekaptulasi Kehadiran</h2>
+        <table class="w-full border border-collapse border-gray-300 rounded-md">
+            <tbody>
+                <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Tanggal Rekap Kehadiran:</td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['date']) ?></td>
+                </tr>
+                <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Waktu Masuk:</td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['check_in']) ?></td>
+                </tr>
+                <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Waktu Pulang:</td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['check_out']) ?></td>
                 </tr>
             </tbody>
         </table>
 
         <!-- Tombol Aksi -->
-        <div class="flex justify-between mt-6">
-            <a href="/templates/dashboard.php"
-                class="px-6 py-2 text-gray-800 bg-gray-300 rounded-md hover:bg-gray-400">
+        <div class="flex items-center justify-between mt-6">
+            <a href="/transactions"
+                class="px-4 py-2 text-sm text-gray-800 bg-gray-300 rounded-md font-poppins hover:bg-gray-400">
                 Kembali
             </a>
-            <div>
-                <a href="/templates/edit-student.php?id=12345"
-                    class="px-6 py-2 text-white bg-yellow-500 rounded-md hover:bg-yellow-600">
+            <div class="flex space-x-2">
+                <a href="/transactions/<?= $transaction['id'] ?>/edit"
+                    class="px-4 py-2 text-sm text-white bg-blue-500 rounded-md font-poppins hover:bg-blue-600">
                     Edit
                 </a>
-                <form action="/src/controllers/deleteStudent.php" method="POST" class="inline">
-                    <input type="hidden" name="id_siswa" value="12345">
-                    <button type="submit"
-                        class="px-6 py-2 text-white bg-red-500 rounded-md hover:bg-red-600">
-                        Hapus
-                    </button>
-                </form>
+                <a href="/transactions/<?= $transaction['id'] ?>/delete"
+                    class="px-4 py-2 text-sm text-white bg-red-500 rounded-md font-poppins hover:bg-red-600">
+                    Delete
+                </a>
             </div>
         </div>
     </div>

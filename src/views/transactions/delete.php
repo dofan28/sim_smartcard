@@ -1,10 +1,6 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['login'])) {
-    header("Location: /login");
-    exit;
-}
 
 
 if (isset($matches[1]) && is_numeric($matches[1])) {

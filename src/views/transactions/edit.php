@@ -1,9 +1,6 @@
 <?php
 
-if (!isset($_SESSION['login'])) {
-    header("Location: /login");
-    exit;
-}
+
 
 $transactionId = $matches[1];
 

@@ -57,6 +57,11 @@ if ($uri === '') {
 } elseif (preg_match('/^transactions\/(\d+)\/delete$/', $uri, $matches)) {
     require_once '../src/queries/transaction_queries.php';
     include __DIR__ . '/../src/views/transactions/delete.php';
+} elseif (preg_match('/^transactions\/(\d+)$/', $uri, $matches)) {
+    $title = 'Detail Rekaptulasi Kehadiran Siswa';
+    require_once '../src/queries/transaction_queries.php';
+    $content = __DIR__ . '/../src/views/transactions/show.php';
+    include __DIR__ . '/../src/views/layouts/dashboard-layout.php';
 } elseif ($uri === 'logs') {
     $title = 'Log Aktivitas';
     require_once '../src/queries/log_queries.php';

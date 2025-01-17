@@ -1,16 +1,19 @@
 <?php
 session_start();
+if (!isset($_SESSION['login'])) {
+    header("Location: /login");
+    exit;
+}
 
 $current_uri = htmlspecialchars(trim($_SERVER['REQUEST_URI'], '/'), ENT_QUOTES, 'UTF-8');
 function isActive($path)
 {
     $current_uri = trim($_SERVER['REQUEST_URI'], '/');
-    return $current_uri === $path ? 'bg-yellow-400' : '';
+    return strpos($current_uri, $path) === 0 ? 'bg-yellow-400' : '';
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,8 +77,8 @@ function isActive($path)
         </div>
     </header>
     <nav class="container px-6 py-6 mx-auto ">
-        <div class="bg-blue-900 border-b border-blue-800 rounded-md">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-blue-900 border-2 rounded-md border-amber-400">
+            <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <!-- Navigation Links -->
                     <div class="hidden sm:flex sm:items-center">
@@ -84,10 +87,11 @@ function isActive($path)
                                 class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('dashboard') ?>">
                                 Dashboard
                             </a>
-                            <a href="/scanners"
+                            <!--          <a href="/scanners"
                                 class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('scanners') ?>">
                                 Scan Kartu
                             </a>
+                            -->
                             <a href="/students"
                                 class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('students') ?>">
                                 Data Siswa
@@ -106,10 +110,10 @@ function isActive($path)
                     <!-- Mobile Menu Button -->
                     <div class="flex items-center sm:hidden">
                         <button type="button"
-                            class="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-blue-800 focus:outline-none"
+                            class="inline-flex items-center justify-center p-2 text-white rounded-md hover:bg-blue-800 focus:outline-none"
                             aria-controls="mobile-menu"
                             aria-expanded="false">
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>

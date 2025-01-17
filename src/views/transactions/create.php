@@ -1,9 +1,6 @@
 <?php
 
-if (!isset($_SESSION['login'])) {
-    header("Location: /login");
-    exit;
-}
+
 
 $students = getAllStudents($db);
 
@@ -89,9 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     placeholder="Cari mahasiswa..." autocomplete="off">
                 <input type="hidden" id="student_id" name="student_id" required
                     value="<?= isset($_SESSION['old_data']['student_id']) ? $_SESSION['old_data']['student_id'] : '' ?>">
-                <div id="student_list" class="absolute z-10 hidden w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                <div id="student_list" class="absolute z-10 hidden w-full mt-1 overflow-y-auto bg-white border border-gray-300 rounded-md shadow-lg max-h-60">
                     <?php foreach ($students as $student): ?>
-                        <div class="student-item px-4 py-2 cursor-pointer hover:bg-gray-100 text-sm font-poppins"
+                        <div class="px-4 py-2 text-sm cursor-pointer student-item hover:bg-gray-100 font-poppins"
                             data-id="<?= $student['id'] ?>"
                             data-name="<?= htmlspecialchars($student['full_name']) ?>">
                             <?= htmlspecialchars($student['full_name']) ?>

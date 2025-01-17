@@ -1,9 +1,5 @@
 <?php
 
-if (!isset($_SESSION['login'])) {
-    header("Location: /login");
-    exit;
-}
 
 $studentId = $matches[1];
 

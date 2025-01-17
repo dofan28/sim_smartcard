@@ -20,6 +20,17 @@ function getAllTransactionJoinStudents($db)
 }
 
 
+function getLimitedTransactionJoinStudents($db)
+{
+    $sql = "
+     SELECT transactions.id, transactions.student_id, transactions.date, transactions.check_in, transactions.check_out, students.full_name FROM transactions, students WHERE transactions.student_id = students.id LIMIT 4
+    ";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function storeTransactions($db, $student_id, $date, $check_in, $check_out)
 {
     $sql = "INSERT INTO transactions (student_id, date, check_in, check_out, created_at, updated_at) 
@@ -63,7 +74,7 @@ function deleteTransaction($db, $id)
 function getTransactionById($db, $id)
 {
     $sql = "
-        SELECT transactions.*, students.full_name
+        SELECT transactions.*, students.uid, students.full_name, students.nis, students.class, students.address, students.status
         FROM transactions
         JOIN students ON transactions.student_id = students.id
         WHERE transactions.id = :id

@@ -1,9 +1,6 @@
 <?php
 
-if (!isset($_SESSION['login'])) {
-    header("Location: /login");
-    exit;
-}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $uid = !empty($_POST["uid"]) ? htmlspecialchars($_POST["uid"]) : null;

@@ -8,6 +8,14 @@ function getAllStudents($db)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getLimitedStudents($db)
+{
+    $sql = "SELECT * FROM students LIMIT 4";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function storeStudent($db, $uid, $nis, $full_name, $class, $address, $status)
 {
     $sql = "INSERT INTO students (uid, nis, full_name, class, address, status, created_at, updated_at) 
