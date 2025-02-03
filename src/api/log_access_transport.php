@@ -10,16 +10,16 @@ if ($uid) {
     }
 
     $studentId = $student['id'];
-    $transaction = handleTransaction($db, $studentId);
+    $transactionTransport = handleTransactionTransport($db, $studentId);
 
-    if ($transaction) {
-        if (!$transaction['check_out']) {
-            $checkInTime = strtotime($transaction['check_in']);
+    if ($transactionTransport) {
+        if (!$transactionTransport['check_out']) {
+            $checkInTime = strtotime($transactionTransport['check_in']);
             $currentTime = time();
             $timeDifference = ($currentTime - $checkInTime) / 60;
 
             if ($timeDifference >= 10) {
-                updateCheckout($db, $transaction['id']);
+                updateCheckout($db, $transactionTransport['id']);
                 sendResponse(200, 'Checkout successful');
             } else {
                 sendResponse(400, 'Checkout too early');
@@ -28,7 +28,7 @@ if ($uid) {
             sendResponse(200, 'Already checked out');
         }
     } else {
-        createTransaction($db, $studentId);
+        createTransactionTransport($db, $studentId);
         sendResponse(201, 'Check-in successful');
     }
 } else {

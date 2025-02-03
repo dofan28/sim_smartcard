@@ -1,6 +1,6 @@
 <?php
 
-
+    
 
 $students = getAllStudents($db);
 ?>

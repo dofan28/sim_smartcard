@@ -3,11 +3,10 @@
     <div class="container flex flex-col items-center px-6 py-12 mx-auto lg:flex-row lg:space-x-12">
         <div class="text-center lg:w-1/2 lg:text-left">
             <h2 class="mb-4 sm:text-5xl text-2xl font-bold leading-tight text-blue-900 font-poppins">
-                Solusi Cerdas dengan Smart Card
+                Solusi Cerdas dengan SmartEduCard
             </h2>
-            <p class="leading-relaxed text-gray-800 texs-sm font-poppins">
-                Sistem informasi manajemen berbasis smart card yang mendukung efisiensi
-                dan akurasi pengelolaan data.
+            <p class="leading-relaxed text-gray-800 texs-sm font-poppins text-sm">
+            Sebuah platform terintegrasi untuk memudahkan pengelolaan data dan akses yang terhubung langsung dengan perangkat SmartEduCard Bukittinggi, menghadirkan kemudahan dan efisiensi dalam sistem pendidikan dan transportasi siswa.
             </p>
             <hr class="mt-2 sm:w-2/6 w-full border-2 border-amber-400 border-opacity-50 mb-6">
             <a href="/login"

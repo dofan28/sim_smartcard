@@ -14,6 +14,7 @@ function isActive($path)
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,7 +70,7 @@ function isActive($path)
     <header class="text-white bg-blue-900 border-b-2 shadow-sm border-amber-400">
         <div class="container flex items-center justify-between px-6 py-4 mx-auto">
             <h1 class="text-2xl font-semibold text-amber-400">
-                <a href="/" class="font-poppins">SIM - Smart Card</a>
+                <a href="/" class="font-poppins">SmartEduCard Bukittinggi</a>
             </h1>
             <nav class="space-x-4">
                 <a href="/logout" class="px-3 py-2 text-sm font-medium text-white rounded-md font-poppins hover:bg-amber-600 hover:font-semibold bg-amber-400">Logout</a>
@@ -87,18 +88,21 @@ function isActive($path)
                                 class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('dashboard') ?>">
                                 Dashboard
                             </a>
-                            <!--          <a href="/scanners"
-                                class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('scanners') ?>">
-                                Scan Kartu
-                            </a>
-                            -->
                             <a href="/students"
                                 class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('students') ?>">
                                 Data Siswa
                             </a>
-                            <a href="/transactions"
-                                class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('transactions') ?>">
-                                Rekap Kehadiran
+                            <a href="/transaction/transports"
+                                class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('transaction/transport') ?>">
+                                Log Akses Transportasi
+                            </a>
+                            <a href="/transaction/gates"
+                                class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('transaction/gate') ?>">
+                                Log Akses Gerbang
+                            </a>
+                            <a href="/transaction/classes"
+                                class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('transaction/classes') ?>">
+                                Log Akses Kelas
                             </a>
                             <a href="/logs"
                                 class="text-white hover:bg-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 font-poppins <?= isActive('logs') ?>">
@@ -124,17 +128,22 @@ function isActive($path)
             <!-- Mobile Menu -->
             <div class="sm:hidden" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1">
-                    <a href="/scanners"
-                        class="text-white hover:bg-amber-400 block px-3 py-2 rounded-md text-base font-medium font-poppins <?= isActive('scanners') ?>">
-                        Scan Kartu
-                    </a>
+
                     <a href="/students"
                         class="text-white hover:bg-amber-400 block px-3 py-2 rounded-md text-base font-medium font-poppins <?= isActive('students') ?>">
                         Data Siswa
                     </a>
-                    <a href="/transactions"
-                        class="text-white hover:bg-amber-400 block px-3 py-2 rounded-md text-base font-medium font-poppins <?= isActive('transactions') ?>">
-                        Rekap Kehadiran
+                    <a href="/transaction/transports"
+                        class="text-white hover:bg-amber-400 block px-3 py-2 rounded-md text-base font-medium font-poppins <?= isActive('transaction/transports') ?>">
+                        Log Akses Transportasi
+                    </a>
+                    <a href="/transaction/gates"
+                        class="text-white hover:bg-amber-400 block px-3 py-2 rounded-md text-base font-medium font-poppins <?= isActive('transaction/gates') ?>">
+                        Log Akses Gerbang
+                    </a>
+                    <a href="/transaction/classes"
+                        class="text-white hover:bg-amber-400 block px-3 py-2 rounded-md text-base font-medium font-poppins <?= isActive('transaction/classes') ?>">
+                        Log Akses Kelas
                     </a>
                     <a href="/logs"
                         class="text-white hover:bg-amber-400 block px-3 py-2 rounded-md text-base font-medium font-poppins <?= isActive('logs') ?>">
@@ -153,7 +162,7 @@ function isActive($path)
         <div class="container mx-auto text-center">
             <p class="text-sm leading-relaxed font-poppins">
                 &copy; 2025
-                <span class="text-amber-400 font-poppins">Smart Card </span>.
+                <span class="text-amber-400 font-poppins">SmartEduCard Bukittinggi </span>.
                 All Rights Reserved.
             </p>
         </div>

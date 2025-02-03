@@ -8,7 +8,7 @@ if ($transactionId) {
     // Ambil data transaksi berdasarkan ID
     $transaction_id = $transactionId;
 
-    $transaction = getTransactionById($db, $transaction_id);
+    $transaction = getTransactionGateById($db, $transaction_id);
 
     // Pastikan transaksi ditemukan
     if (!$transaction) {
@@ -16,7 +16,7 @@ if ($transactionId) {
         exit;
     }
 } else {
-    header("Location: /transactions");
+    header("Location: /transaction/gates");
     exit;
 }
 
@@ -55,17 +55,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
         $_SESSION['old_data'] = $_POST;
-        header("Location: /transactions/{$transaction_id}/edit");
+        header("Location: /transaction/gates/{$transaction_id}/edit");
         exit;
     }
 
-    $addTransaction = updateTransactions($db, $transaction_id, $student_id, $date, $check_in, $check_out);
+    $addTransaction = updateTransactionGates($db, $transaction_id, $student_id, $date, $check_in, $check_out);
 
     if ($addTransaction) {
         echo "
         <script>
             alert('Data berhasil diperbaruhi.');
-            document.location.href = '/transactions';
+            document.location.href = '/transaction/gates';
         </script>
         ";
     } else {
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <main class="container px-6 py-12 mx-auto">
     <!-- Header -->
     <header class="mb-8">
-        <h1 class="text-3xl font-semibold tracking-wide text-blue-900 font-poppins">Edit Rekaptulasi Kehadiran Siswa</h1>
+        <h1 class="text-3xl font-semibold tracking-wide text-blue-900 font-poppins">Edit Log Akses Gerbang</h1>
     </header>
     <?php if (!empty($_SESSION['errors'])): ?>
         <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">

@@ -1,9 +1,6 @@
 <?php
-
-
-
 $transactionId = $matches[1];
-$transaction = getTransactionById($db, $transactionId);
+$transaction = getTransactionClassById($db, $transactionId);
 ?>
 
 
@@ -12,8 +9,8 @@ $transaction = getTransactionById($db, $transactionId);
 <main class="container px-6 py-12 mx-auto">
     <!-- Header -->
     <header class="mb-8">
-        <h1 class="text-3xl font-semibold tracking-wide text-blue-900 font-poppins">Detail Data Rekaptulasi Kehadiran Siswa</h1>
-        <p class="mt-2 text-sm text-gray-700 font-poppins">Berikut adalah informasi lengkap dari rekapulasi kehadiran siswa yang dipilih.</p>
+        <h1 class="text-3xl font-semibold tracking-wide text-blue-900 font-poppins">Detail Data Log Akses Kelas</h1>
+        <p class="mt-2 text-sm text-gray-700 font-poppins">Berikut adalah informasi lengkap dari log akses kelas yang dipilih.</p>
     </header>
 
     <!-- Detail Siswa -->
@@ -54,11 +51,11 @@ $transaction = getTransactionById($db, $transactionId);
     </div>
 
     <div class="p-6 mt-6 bg-white rounded-md shadow-md">
-        <h2 class="mb-6 text-3xl font-semibold text-blue-800 uppercase  font-poppins" id="nama-siswa">Data Rekaptulasi Kehadiran</h2>
+        <h2 class="mb-6 text-3xl font-semibold text-blue-800 uppercase  font-poppins" id="nama-siswa">Data Log Akses Kelas</h2>
         <table class="w-full border border-collapse border-gray-300 rounded-md">
             <tbody>
                 <tr class="border-b border-gray-300">
-                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Tanggal Rekap Kehadiran:</td>
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Tanggal Log Akses Kelas:</td>
                     <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['date']) ?></td>
                 </tr>
                 <tr class="border-b border-gray-300">
@@ -74,16 +71,16 @@ $transaction = getTransactionById($db, $transactionId);
 
         <!-- Tombol Aksi -->
         <div class="flex items-center justify-between mt-6">
-            <a href="/transactions"
+            <a href="/transaction/classes"
                 class="px-4 py-2 text-sm text-gray-800 bg-gray-300 rounded-md font-poppins hover:bg-gray-400">
                 Kembali
             </a>
             <div class="flex space-x-2">
-                <a href="/transactions/<?= $transaction['id'] ?>/edit"
+                <a href="/transaction/classes/<?= $transaction['id'] ?>/edit"
                     class="px-4 py-2 text-sm text-white bg-blue-500 rounded-md font-poppins hover:bg-blue-600">
                     Edit
                 </a>
-                <a href="/transactions/<?= $transaction['id'] ?>/delete"
+                <a href="/transaction/classes/<?= $transaction['id'] ?>/delete"
                     class="px-4 py-2 text-sm text-white bg-red-500 rounded-md font-poppins hover:bg-red-600">
                     Delete
                 </a>

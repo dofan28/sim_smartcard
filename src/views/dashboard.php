@@ -36,7 +36,7 @@ $limitedLogs = getLimitedlLogs($db);
                     <p class="mt-2 text-2xl font-bold text-amber-400"><?= getTotalStudents($db); ?></p>
                 </div>
                 <div class="p-4 bg-blue-900 border-2 rounded-md shadow border-amber-400">
-                    <h3 class="text-lg font-semibold text-white font-poppins">Total Kehadiran Siswa</h3>
+                    <h3 class="text-lg font-semibold text-white font-poppins">Total Log Akses</h3>
                     <p class="mt-2 text-2xl font-bold text-amber-400"><?= getTotalTransactions($db); ?></p>
                 </div>
                 <div class="p-4 bg-blue-900 border-2 rounded-md shadow border-amber-400">
@@ -104,14 +104,15 @@ $limitedLogs = getLimitedlLogs($db);
             </section>
             <section id="" class="my-6">
                 <div class="flex items-center justify-between">
-                    <h2 class="mb-4 text-xl font-semibold text-blue-900 font-poppins">Rekap Kehadiran Siswa</h2>
-                    <a href="/transactions" class="mr-4 text-sm text-blue-900 font-poppins hover:font-semibold">Lihat Selengkapnya></a>
+                    <h2 class="mb-4 text-xl font-semibold text-blue-900 font-poppins">Log Akses</h2>
+                    <!-- <a href="/transactions" class="mr-4 text-sm text-blue-900 font-poppins hover:font-semibold">Lihat Selengkapnya></a> -->
                 </div>
                 <div class="overflow-hidden bg-white border rounded-md shadow">
                     <table class="min-w-full text-left border-collapse">
                         <thead class="text-white bg-blue-900">
                             <tr>
                                 <th class="px-6 py-4 text-sm font-medium font-poppins">Nama</th>
+                                <th class="px-6 py-4 text-sm font-medium font-poppins">Tipe</th>
                                 <th class="px-6 py-4 text-sm font-medium font-poppins">Tanggal</th>
                                 <th class="px-6 py-4 text-sm font-medium font-poppins">Waktu Masuk</th>
                                 <th class="px-6 py-4 text-sm font-medium font-poppins">Waktu Pulang</th>
@@ -122,6 +123,17 @@ $limitedLogs = getLimitedlLogs($db);
                                 <?php foreach ($limitedTransactionJoinStudents as $limitedStudent): ?>
                                     <tr class="border-t hover:bg-gray-100">
                                         <td class="px-6 py-4 text-sm font-poppins"><?= $limitedStudent['full_name'] ?></td>
+                                        <td class="px-6 py-4 text-sm font-poppins">
+
+                                            <?php if ($limitedStudent['type_transaction'] == 'transportation'): ?>
+                                                Transportasi
+                                            <?php elseif ($limitedStudent['type_transaction'] == 'gate'): ?>
+                                                Gerbang
+                                            <?php elseif ($limitedStudent['type_transaction'] == 'class'): ?>
+                                                Kelas
+                                            <?php endif ?>
+
+                                        </td>
                                         <td class="px-6 py-4 text-sm font-poppins"><?= $limitedStudent['date'] ?></td>
                                         <td class="px-6 py-4 text-sm font-poppins"><?= $limitedStudent['check_in'] ?></td>
                                         <td class="px-6 py-4 text-sm font-poppins"><?= $limitedStudent['check_out'] ?></td>

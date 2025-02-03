@@ -18,7 +18,7 @@ session_start();
     <header class="text-white bg-blue-900 shadow-sm  border-b-2 border-amber-400">
         <div class="container flex items-center justify-between px-6 py-4 mx-auto">
             <h1 class="text-2xl font-semibold text-amber-400">
-                <a href="/" class="font-poppins">SIM - Smart Card</a>
+                <a href="/" class="font-poppins">SmartEduCard Bukittinggi</a>
             </h1>
             <nav class="space-x-4">
                 <?php if (isset($_SESSION['login'])): ?>
@@ -39,7 +39,7 @@ session_start();
         <div class="container mx-auto text-center">
             <p class="text-sm leading-relaxed font-poppins">
                 &copy; 2025
-                <span class="text-amber-400 font-poppins">Smart Card </span>.
+                <span class="text-amber-400 font-poppins">SmartEduCard Buktitinggi</span>.
                 All Rights Reserved.
             </p>
         </div>

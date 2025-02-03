@@ -1,7 +1,4 @@
 <?php
-
-
-
 $students = getAllStudents($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -37,24 +34,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
         $_SESSION['old_data'] = $_POST;
-        header("Location: /transactions/create");
+        header("Location: /transaction/transports/create");
         exit;
     }
 
-    $addTransaction = storeTransactions($db, $student_id, $date, $check_in, $check_out);
+    $addTransaction = storeTransactionTransports($db, $student_id, $date, $check_in, $check_out);
 
     if ($addTransaction) {
         echo "
         <script>
             alert('Data berhasil ditambahkan');
-            document.location.href = '/transactions';
+            document.location.href = '/transaction/transports';
         </script>
         ";
     } else {
         echo "
             <script>
             alert('Data gagal ditambahkan');
-            document.location.href = '/transactions/create';
+            document.location.href = '/transaction/transports/create';
         </script>";
     }
 }
@@ -63,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <main class="container px-6 py-12 mx-auto">
     <!-- Header -->
     <header class="mb-8">
-        <h1 class="text-3xl font-semibold tracking-wide text-blue-900 font-poppins">Buat Rekaptulasi Kehadiran Siswa</h1>
+        <h1 class="text-3xl font-semibold tracking-wide text-blue-900 font-poppins">Buat Log Akses Transportasi</h1>
     </header>
     <?php if (!empty($_SESSION['errors'])): ?>
         <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
