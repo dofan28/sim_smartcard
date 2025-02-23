@@ -37,7 +37,20 @@ if ($uri === '') {
     require_once '../src/queries/log_queries.php';
     $content = __DIR__ . '/../src/views/students/create.php';
     include __DIR__ . '/../src/views/layouts/dashboard-layout.php';
-} elseif ($uri === 'transactions') {
+}elseif (preg_match('/^students\/(\d+)\/edit$/', $uri, $matches)) {
+    $title = 'Edit Siswa';
+    require_once '../src/queries/student_queries.php';
+    $content = __DIR__ . '/../src/views/students/edit.php';
+    include __DIR__ . '/../src/views/layouts/dashboard-layout.php';
+} elseif (preg_match('/^students\/(\d+)\/delete$/', $uri, $matches)) {
+    require_once '../src/queries/student_queries.php';
+    include __DIR__ . '/../src/views/students/delete.php';
+} elseif (preg_match('/^students\/(\d+)$/', $uri, $matches)) {
+    $title = 'Detail Siswa';
+    require_once '../src/queries/student_queries.php';
+    $content = __DIR__ . '/../src/views/students/show.php';
+    include __DIR__ . '/../src/views/layouts/dashboard-layout.php';
+}  elseif ($uri === 'transactions') {
     $title = 'Log Akses';
     require_once '../src/queries/transaction_queries.php';
     $content =  __DIR__ . '/../src/views/transactions/index.php';
@@ -167,6 +180,24 @@ if ($uri === '') {
 } elseif ($uri === 'api/logs') {
     require_once '../src/queries/log_queries.php';
     include __DIR__ . '/../src/api/log.php';
+}elseif ($uri === 'transaction/transport/print/pdf') {
+    require_once '../src/queries/transaction_transport_queries.php';
+    require_once '../src/functions/print_pdf_log_access_transport.php';
+}elseif ($uri === 'transaction/gate/print/pdf') {
+    require_once '../src/queries/transaction_gate_queries.php';
+    require_once '../src/functions/print_pdf_log_access_gate.php';
+}elseif ($uri === 'transaction/class/print/pdf') {
+    require_once '../src/queries/transaction_class_queries.php';
+    require_once '../src/functions/print_pdf_log_access_class.php';
+}elseif ($uri === 'transaction/transport/print/excel') {
+    require_once '../src/queries/transaction_transport_queries.php';
+    require_once '../src/functions/print_excel_log_access_transport.php';
+}elseif ($uri === 'transaction/gate/print/excel') {
+    require_once '../src/queries/transaction_gate_queries.php';
+    require_once '../src/functions/print_excel_log_access_gate.php';
+}elseif ($uri === 'transaction/class/print/excel') {
+    require_once '../src/queries/transaction_class_queries.php';
+    require_once '../src/functions/print_excel_log_access_class.php';
 } else {
     http_response_code(404);
     echo '<h1>404 - Halaman tidak ditemukan</h1>';

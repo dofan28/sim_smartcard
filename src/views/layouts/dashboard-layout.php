@@ -73,7 +73,7 @@ function isActive($path)
                 <a href="/" class="font-poppins">SmartEduCard Bukittinggi</a>
             </h1>
             <nav class="space-x-4">
-                <a href="/logout" class="px-3 py-2 text-sm font-medium text-white rounded-md font-poppins hover:bg-amber-600 hover:font-semibold bg-amber-400">Logout</a>
+                <a href="/logout" class="px-3 py-2 text-sm font-medium text-white rounded-md font-poppins hover:bg-amber-600 hover:font-semibold bg-amber-400">Keluar</a>
             </nav>
         </div>
     </header>
