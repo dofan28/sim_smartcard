@@ -17,21 +17,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = htmlspecialchars($_POST['id']);
     $uid = !empty($_POST["uid"]) ? htmlspecialchars($_POST["uid"]) : null;
     $nis = !empty($_POST["nis"]) ? htmlspecialchars($_POST["nis"]) : null;
+    $email = !empty($_POST["email"]) ? htmlspecialchars($_POST["email"]) : null;
     $full_name = !empty($_POST["full_name"]) ? htmlspecialchars($_POST["full_name"]) : null;
     $class = !empty($_POST["class"]) ? htmlspecialchars($_POST["class"]) : null;
+    $phone = !empty($_POST["phone"]) ? htmlspecialchars($_POST["phone"]) : null;
     $address = !empty($_POST["address"]) ? htmlspecialchars($_POST["address"]) : null;
     $status = !empty($_POST["status"]) ? htmlspecialchars($_POST["status"]) : null;
 
     $errors = [];
 
+    function isUniqueForUpdate($db, $column, $value, $id)
+    {
+        $stmt = $db->prepare("SELECT COUNT(*) FROM students WHERE $column = :value AND id != :id");
+        $stmt->execute(['value' => $value, 'id' => $id]);
+        return $stmt->fetchColumn() == 0; // Jika 0 berarti unik atau milik sendiri
+    }
+
     // Validasi UID (minimal 5 karakter)
     if (empty($uid) || strlen($uid) < 5) {
         $errors[] = "UID harus diisi dengan minimal 5 karakter.";
+    } elseif (!isUniqueForUpdate($db, 'uid', $uid, $id)) {
+        $errors[] = "UID sudah digunakan oleh pengguna lain.";
     }
 
     // Validasi NIS (hanya angka, minimal 5 karakter)
     if (empty($nis) || !ctype_digit($nis) || strlen($nis) < 5) {
         $errors[] = "NIS harus berupa angka dan minimal 5 karakter.";
+    } elseif (!isUniqueForUpdate($db, 'nis', $nis, $id)) {
+        $errors[] = "NIS sudah terdaftar oleh pengguna lain.";
+    }
+
+    // Validasi Email (format benar & unik untuk update)
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Email harus diisi dengan format yang valid.";
+    } elseif (!isUniqueForUpdate($db, 'email', $email, $id)) {
+        $errors[] = "Email sudah digunakan oleh pengguna lain.";
     }
 
     // Validasi Nama Lengkap (minimal 3 karakter)
@@ -61,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $updateStudent = updateStudent($db, $id, $uid, $nis, $full_name, $class, $address, $status);
+    $updateStudent = updateStudent($db, $id, $uid, $nis, $email, $full_name, $class, $address, $phone, $status);
 
     if ($updateStudent) {
         echo "<script>
@@ -106,9 +126,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 class="w-full px-4 py-2 mt-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-poppins"
                 placeholder="Masukkan nomor induk siswa (NIS)" required value="<?= htmlspecialchars($student['nis']); ?>">
         </div>
-
-
-
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-800 font-poppins">Email</label>
+            <input type="text" id="email" name="email"
+                class="w-full px-4 py-2 mt-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-poppins"
+                placeholder="Masukkan email" required value="<?= htmlspecialchars($student['email']); ?>">
+        </div>
         <div class="mb-4">
             <label for="full_name" class="block text-sm font-medium text-gray-800 font-poppins">Nama Lengkap</label>
             <input type="text" id="full_name" name="full_name"

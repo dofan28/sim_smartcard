@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 if (!isset($_SESSION['login'])) {
     header("Location: /login");
@@ -65,7 +66,7 @@ function isActive($path)
 
 </head>
 
-<body class="bg-gray-100">
+<body class="flex flex-col min-h-screen bg-gray-100">
     <!-- Header -->
     <header class="text-white bg-blue-900 border-b-2 shadow-sm border-amber-400">
         <div class="container flex items-center justify-between px-6 py-4 mx-auto">
@@ -125,10 +126,12 @@ function isActive($path)
                 </div>
             </div>
 
-            <!-- Mobile Menu -->
             <div class="sm:hidden" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1">
-
+                    <a href="/dashboard"
+                        class="text-white hover:bg-amber-400 block px-3 py-2 rounded-md text-base font-medium font-poppins <?= isActive('dashboard') ?>">
+                        Dashboard
+                    </a>
                     <a href="/students"
                         class="text-white hover:bg-amber-400 block px-3 py-2 rounded-md text-base font-medium font-poppins <?= isActive('students') ?>">
                         Data Siswa
@@ -153,7 +156,7 @@ function isActive($path)
             </div>
         </div>
     </nav>
-    <main>
+    <main class="flex-grow">
         <?php include $content; ?>
     </main>
 
@@ -180,3 +183,6 @@ function isActive($path)
 </body>
 
 </html>
+<?php
+ob_end_flush();
+?>

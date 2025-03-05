@@ -27,6 +27,7 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
         array (
@@ -34,6 +35,10 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
             'Mpdf\\PsrHttpMessageShim\\' => 24,
             'Mpdf\\' => 5,
             'Matrix\\' => 7,
+        ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
         ),
         'D' => 
         array (
@@ -76,6 +81,10 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
         ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
         'Mpdf\\PsrLogAwareTrait\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/psr-log-aware-trait/src',
@@ -91,6 +100,10 @@ class ComposerStaticInit5ce13f389270716aa74fac6c4293dda4
         'Matrix\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'DeepCopy\\' => 
         array (

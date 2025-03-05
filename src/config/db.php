@@ -1,4 +1,6 @@
 <?php
+$secret_key = "taiba@lmg";
+$server_name = "SmartEduCard Bukittinggi";
 
 $host = 'localhost';
 $dbname = 'smartcard_app';

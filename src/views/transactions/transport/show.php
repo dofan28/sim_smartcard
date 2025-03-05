@@ -18,7 +18,7 @@ $transaction = getTransactionTransportById($db, $transactionId);
 
     <!-- Detail Siswa -->
     <div class="p-6 bg-white rounded-md shadow-md">
-        <h2 class="mb-6 text-3xl font-semibold text-blue-800 uppercase  font-poppins" id="nama-siswa">Data Siswa</h2>
+        <h2 class="mb-6 text-3xl font-semibold text-blue-800 uppercase font-poppins" id="nama-siswa">Data Siswa</h2>
         <table class="w-full border border-collapse border-gray-300 rounded-md">
             <tbody>
                 <tr class="border-b border-gray-300">
@@ -34,12 +34,20 @@ $transaction = getTransactionTransportById($db, $transactionId);
                     <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['nis']) ?></td>
                 </tr>
                 <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Email:</td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="email"><?= htmlspecialchars($transaction['email']) ?></td>
+                </tr>
+                <tr class="border-b border-gray-300">
                     <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Kelas:</td>
                     <td class="px-4 py-2 text-gray-600" id="kelas"><?= htmlspecialchars($transaction['class']) ?></td>
                 </tr>
                 <tr class="border-b border-gray-300">
                     <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Alamat:</td>
                     <td class="px-4 py-2 text-gray-600" id="alamat"><?= htmlspecialchars($transaction['address']) ?></td>
+                </tr>
+                <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Nomor Telepon:</td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="phone"><?= htmlspecialchars($transaction['phone']) ?></td>
                 </tr>
                 <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Status:</td>
                 <td class="px-4 py-2 text-gray-600" id="alamat">
@@ -54,20 +62,23 @@ $transaction = getTransactionTransportById($db, $transactionId);
     </div>
 
     <div class="p-6 mt-6 bg-white rounded-md shadow-md">
-        <h2 class="mb-6 text-3xl font-semibold text-blue-800 uppercase  font-poppins" id="nama-siswa">Data Log Akses Transportasi</h2>
+        <h2 class="mb-6 text-3xl font-semibold text-blue-800 uppercase font-poppins" id="nama-siswa">Data Log Akses Transportasi</h2>
         <table class="w-full border border-collapse border-gray-300 rounded-md">
             <tbody>
                 <tr class="border-b border-gray-300">
                     <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Tanggal Log Akses Transportasi:</td>
-                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['date']) ?></td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="date"><?= htmlspecialchars($transaction['date']) ?></td>
                 </tr>
                 <tr class="border-b border-gray-300">
                     <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Waktu Masuk:</td>
-                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['check_in']) ?></td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="check_in"><?= htmlspecialchars($transaction['check_in']) ?></td>
                 </tr>
                 <tr class="border-b border-gray-300">
                     <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Waktu Pulang:</td>
-                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($transaction['check_out']) ?></td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="check_out">
+                        <?= isset($transaction['check_out']) ? htmlspecialchars($transaction['check_out']) : '-' ?>
+                    </td>
+
                 </tr>
             </tbody>
         </table>

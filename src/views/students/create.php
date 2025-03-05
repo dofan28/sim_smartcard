@@ -1,26 +1,45 @@
 <?php
 
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $uid = !empty($_POST["uid"]) ? htmlspecialchars($_POST["uid"]) : null;
     $nis = !empty($_POST["nis"]) ? htmlspecialchars($_POST["nis"]) : null;
+    $email = !empty($_POST["email"]) ? htmlspecialchars($_POST["email"]) : null;
     $full_name = !empty($_POST["full_name"]) ? htmlspecialchars($_POST["full_name"]) : null;
     $class = !empty($_POST["class"]) ? htmlspecialchars($_POST["class"]) : null;
     $address = !empty($_POST["address"]) ? htmlspecialchars($_POST["address"]) : null;
+    $phone = !empty($_POST["phone"]) ? htmlspecialchars($_POST["phone"]) : null;
     $status = !empty($_POST["status"]) ? htmlspecialchars($_POST["status"]) : null;
 
     $errors = [];
 
+    function isUnique($db, $column, $value)
+    {
+        $stmt = $db->prepare("SELECT COUNT(*) FROM students WHERE $column = :value");
+        $stmt->execute(['value' => $value]);
+        return $stmt->fetchColumn() == 0;
+    }
+
     // Validasi UID (minimal 5 karakter)
     if (empty($uid) || strlen($uid) < 5) {
         $errors[] = "UID harus diisi dengan minimal 5 karakter.";
+    } elseif (!isUnique($db, 'uid', $uid)) {
+        $errors[] = "UID sudah digunakan, silakan gunakan UID lain.";
     }
 
     // Validasi NIS (hanya angka, minimal 5 karakter)
     if (empty($nis) || !ctype_digit($nis) || strlen($nis) < 5) {
         $errors[] = "NIS harus berupa angka dan minimal 5 karakter.";
+    } elseif (!isUnique($db, 'nis', $nis)) {
+        $errors[] = "NIS sudah terdaftar, silakan gunakan NIS lain.";
     }
+
+    // Validasi Email (harus diisi dan format email yang valid)
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Email harus diisi dengan format yang valid.";
+    } elseif (!isUnique($db, 'email', $email)) {
+        $errors[] = "Email sudah digunakan, silakan gunakan email lain.";
+    }
+
 
     // Validasi Nama Lengkap (minimal 3 karakter)
     if (empty($full_name) || strlen($full_name) < 3) {
@@ -37,6 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Alamat tidak boleh kosong.";
     }
 
+    // Validasi Nomor HP (hanya angka, minimal 10 karakter, maksimal 15 karakter)
+    if (empty($phone) || !ctype_digit($phone) || strlen($phone) < 10 || strlen($phone) > 15) {
+        $errors[] = "Nomor HP harus berupa angka dan memiliki panjang antara 10 hingga 15 karakter.";
+    }
+
     // Validasi Status (aktif atau tidak aktif)
     if (empty($status) || !in_array($status, ['active', 'inactive'])) {
         $errors[] = "Status harus dipilih antara 'Aktif' atau 'Tidak Aktif'.";
@@ -49,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $addStudent = storeStudent($db, $uid, $nis, $full_name, $class, $address, $status);
+    $addStudent = storeStudent($db, $uid, $nis, $email, $full_name, $class, $address, $phone, $status);
 
     if ($addStudent) {
         echo "
@@ -83,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
             </ul>
         </div>
-
     <?php endif; ?>
     <!-- Form Tambah Data -->
     <form method="POST" class="p-6 bg-white rounded-md shadow-md">
@@ -121,12 +144,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <small class="block mt-1 text-xs text-gray-600 font-poppins">Data UID diambil dari kartu fisik (Card) yang terakhir ditempelkan pada alat pembaca (Reader). Jika ingin memasukkan data UID terbaru atau milik anda silakan tempelkan ke alat pembaca (Reader) lagi.</small>
             </div>
         </div>
-
         <div class="mb-4">
             <label for="nis" class="block text-sm font-medium text-gray-800 font-poppins">Nomor Induk Siswa (NIS)</label>
             <input type="text" id="nis" name="nis"
                 class="w-full px-4 py-2 mt-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-poppins"
                 placeholder="Masukkan nomor induk siswa (NIS)" required value="<?= isset($_SESSION['old_data']['nis']) ? $_SESSION['old_data']['nis'] : '' ?>">
+        </div>
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-800 font-poppins">Email</label>
+            <input type="text" id="email" name="email"
+                class="w-full px-4 py-2 mt-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-poppins"
+                placeholder="Masukkan email" required value="<?= isset($_SESSION['old_data']['email']) ? $_SESSION['old_data']['email'] : '' ?>">
         </div>
         <div class="mb-4">
             <label for="full_name" class="block text-sm font-medium text-gray-800 font-poppins">Nama Lengkap</label>
@@ -139,6 +167,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" id="class" name="class"
                 class="w-full px-4 py-2 mt-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-poppins"
                 placeholder="Masukkan kelas" required value="<?= isset($_SESSION['old_data']['class']) ? $_SESSION['old_data']['class'] : '' ?>">
+        </div>
+        <div class="mb-4">
+            <label for="phone" class="block text-sm font-medium text-gray-800 font-poppins">Nomor HP (Disarankan nomor HP orang tua jika ada)</label>
+            <input type="text" id="phone" name="phone"
+                class="w-full px-4 py-2 mt-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-poppins"
+                placeholder="Masukkan nomor HP" required value="<?= isset($_SESSION['old_data']['phone']) ? $_SESSION['old_data']['phone'] : '' ?>">
         </div>
         <div class="mb-4">
             <label for="address" class="block text-sm font-medium text-gray-800 font-poppins">Alamat</label>
@@ -220,7 +254,6 @@ unset($_SESSION['old_data']);
                     if (data.status === 200 && data.data) {
                         // Perbarui inputan UID dengan data terbaru
                         autoInput.value = data.data; // Asumsikan data.data adalah UID terbaru
-                        console.log(autoInput);
                     } else {
                         autoInput.value = 'UID tidak tersedia'; // Pesan jika UID tidak ditemukan
                     }

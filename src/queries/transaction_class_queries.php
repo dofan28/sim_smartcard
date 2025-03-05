@@ -7,7 +7,6 @@ function getAllTransactionClasses($db)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 function getAllTransactionClassJoinStudents($db)
 {
     $sql = "
@@ -22,6 +21,110 @@ function getAllTransactionClassJoinStudents($db)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
+function getAllTransactionClassJoinStudentPaginated($db, $limit, $offset, $search = '')
+{
+    $sql = "
+    SELECT transactions.id, transactions.student_id, transactions.date, 
+           transactions.check_in, transactions.check_out, students.full_name 
+    FROM transactions 
+    JOIN students ON transactions.student_id = students.id
+    WHERE transactions.type_transaction = 'class'
+    ";
+
+    if (!empty($search)) {
+        $sql .= " AND (
+                   transactions.id LIKE :search 
+                   OR transactions.date LIKE :search
+                   OR transactions.check_in LIKE :search
+                   OR transactions.check_out LIKE :search
+                   OR students.uid LIKE :search 
+                   OR students.nis LIKE :search 
+                   OR students.email LIKE :search 
+                   OR students.full_name LIKE :search 
+                   OR students.class LIKE :search 
+                   OR students.address LIKE :search 
+                   OR students.phone LIKE :search 
+                   OR students.status LIKE :search
+               )";
+    }
+
+    $sql .= " LIMIT :limit OFFSET :offset";
+
+    $stmt = $db->prepare($sql);
+
+    if (!empty($search)) {
+        $searchTerm = "%$search%";
+        $stmt->bindParam(":search", $searchTerm, PDO::PARAM_STR);
+    }
+
+    $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+    $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getTotalTransactionClasses($db, $search = '')
+{
+    $sql = "
+    SELECT COUNT(*) as total 
+    FROM transactions
+    JOIN students ON transactions.student_id = students.id
+    WHERE transactions.type_transaction = 'class'
+    ";
+
+    if (!empty($search)) {
+        $sql .= " AND (
+                   transactions.id LIKE :search 
+                   OR transactions.date LIKE :search
+                   OR transactions.check_in LIKE :search
+                   OR transactions.check_out LIKE :search
+                   OR students.uid LIKE :search 
+                   OR students.nis LIKE :search 
+                   OR students.email LIKE :search 
+                   OR students.full_name LIKE :search 
+                   OR students.class LIKE :search 
+                   OR students.address LIKE :search 
+                   OR students.phone LIKE :search 
+                   OR students.status LIKE :search
+               )";
+    }
+
+    $stmt = $db->prepare($sql);
+
+    if (!empty($search)) {
+        $searchTerm = "%$search%";
+        $stmt->bindParam(":search", $searchTerm, PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $result['total'];
+}
+
+
+function getAllPaginationTransactionClassJoinStudents($db, $limit, $offset)
+{
+    $sql = "
+        SELECT transactions.id, transactions.student_id, transactions.date, 
+               transactions.check_in, transactions.check_out, students.full_name 
+        FROM transactions 
+        JOIN students ON transactions.student_id = students.id
+        WHERE transactions.type_transaction = 'class'
+        LIMIT :limit OFFSET :offset
+    ";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 function storeTransactionClasses($db, $student_id, $date, $check_in, $check_out)
 {
@@ -66,7 +169,7 @@ function deleteTransactionClasses($db, $id)
 function getTransactionClassById($db, $id)
 {
     $sql = "
-        SELECT transactions.*, students.uid, students.full_name, students.nis, students.class, students.address, students.status
+        SELECT transactions.*, students.uid, students.full_name, students.nis, students.email, students.class, students.address,  students.phone, students.status
         FROM transactions
         JOIN students ON transactions.student_id = students.id
         WHERE transactions.id = :id
@@ -96,6 +199,15 @@ function createTransactionClass($db, $studentId)
         'date' => date('Y-m-d'),
         'check_in' => date('Y-m-d H:i:s')
     ]);
+
+    // Ambil ID dari data yang baru saja dimasukkan
+    $lastId = $db->lastInsertId();
+
+    // Ambil kembali data berdasarkan ID terakhir
+    $stmt = $db->prepare("SELECT * FROM transactions WHERE id = :id");
+    $stmt->execute(['id' => $lastId]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 function updateCheckout($db, $transactionId)
@@ -105,4 +217,9 @@ function updateCheckout($db, $transactionId)
         'check_out' => date('Y-m-d H:i:s'),
         'id' => $transactionId
     ]);
+
+    
+    $stmt = $db->prepare("SELECT * FROM transactions WHERE id = :id");
+    $stmt->execute(['id' => $transactionId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }

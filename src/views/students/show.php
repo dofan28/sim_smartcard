@@ -32,12 +32,20 @@ $student = getStudentById($db, $studentId);
                     <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($student['nis']) ?></td>
                 </tr>
                 <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Email:</td>
+                    <td class="px-4 py-2 text-sm text-gray-600 font-poppins" id="nama"><?= htmlspecialchars($student['email']) ?></td>
+                </tr>
+                <tr class="border-b border-gray-300">
                     <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Kelas:</td>
                     <td class="px-4 py-2 text-gray-600" id="kelas"><?= htmlspecialchars($student['class']) ?></td>
                 </tr>
                 <tr class="border-b border-gray-300">
                     <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Alamat:</td>
                     <td class="px-4 py-2 text-gray-600" id="alamat"><?= htmlspecialchars($student['address']) ?></td>
+                </tr>
+                <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Nomor Telepon:</td>
+                    <td class="px-4 py-2 text-gray-600" id="phone"><?= htmlspecialchars($student['phone']) ?></td>
                 </tr>
                 <td class="px-4 py-2 text-sm font-semibold text-gray-700 font-poppins">Status:</td>
                 <td class="px-4 py-2 text-gray-600" id="alamat">

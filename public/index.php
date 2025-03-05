@@ -1,8 +1,8 @@
 <?php
 require_once '../src/config/db.php';
 
-$uri = trim($_SERVER['REQUEST_URI'], '/');
-
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = trim($uri, '/');
 
 if ($uri === '') {
     $title = 'Beranda';
@@ -37,7 +37,7 @@ if ($uri === '') {
     require_once '../src/queries/log_queries.php';
     $content = __DIR__ . '/../src/views/students/create.php';
     include __DIR__ . '/../src/views/layouts/dashboard-layout.php';
-}elseif (preg_match('/^students\/(\d+)\/edit$/', $uri, $matches)) {
+} elseif (preg_match('/^students\/(\d+)\/edit$/', $uri, $matches)) {
     $title = 'Edit Siswa';
     require_once '../src/queries/student_queries.php';
     $content = __DIR__ . '/../src/views/students/edit.php';
@@ -50,7 +50,7 @@ if ($uri === '') {
     require_once '../src/queries/student_queries.php';
     $content = __DIR__ . '/../src/views/students/show.php';
     include __DIR__ . '/../src/views/layouts/dashboard-layout.php';
-}  elseif ($uri === 'transactions') {
+} elseif ($uri === 'transactions') {
     $title = 'Log Akses';
     require_once '../src/queries/transaction_queries.php';
     $content =  __DIR__ . '/../src/views/transactions/index.php';
@@ -150,18 +150,23 @@ if ($uri === '') {
     require_once '../src/queries/transaction_class_queries.php';
     $content = __DIR__ . '/../src/views/transactions/class/show.php';
     include __DIR__ . '/../src/views/layouts/dashboard-layout.php';
-} elseif (preg_match('/^api\/transaction\/transports\/([a-zA-Z0-9]+)\/verify$/', $uri, $matches)) {
+} elseif ($uri === 'api/login') {
+    require_once '../src/auth/auth.php';
+} elseif ($uri === 'api/transaction/transports') {
     require_once '../src/functions/helpers.php';
+    require_once '../src/middleware/jwt_middleware.php';
     require_once '../src/queries/student_queries.php';
     require_once '../src/queries/transaction_transport_queries.php';
     include __DIR__ . '/../src/api/log_access_transport.php';
-} elseif (preg_match('/^api\/transaction\/gates\/([a-zA-Z0-9]+)\/verify$/', $uri, $matches)) {
+} elseif ($uri === 'api/transaction/gates') {
     require_once '../src/functions/helpers.php';
+    require_once '../src/middleware/jwt_middleware.php';
     require_once '../src/queries/student_queries.php';
     require_once '../src/queries/transaction_gate_queries.php';
     include __DIR__ . '/../src/api/log_access_gate.php';
-} elseif (preg_match('/^api\/transaction\/classes\/([a-zA-Z0-9]+)\/verify$/', $uri, $matches)) {
+} elseif ($uri === 'api/transaction/classes') {
     require_once '../src/functions/helpers.php';
+    require_once '../src/middleware/jwt_middleware.php';
     require_once '../src/queries/student_queries.php';
     require_once '../src/queries/transaction_class_queries.php';
     include __DIR__ . '/../src/api/log_access_class.php';
@@ -178,24 +183,26 @@ if ($uri === '') {
     require_once '../src/queries/log_queries.php';
     include __DIR__ . '/../src/api/log_latest.php';
 } elseif ($uri === 'api/logs') {
+    require_once '../src/functions/helpers.php';
+    require_once '../src/middleware/jwt_middleware.php';
     require_once '../src/queries/log_queries.php';
     include __DIR__ . '/../src/api/log.php';
-}elseif ($uri === 'transaction/transport/print/pdf') {
+} elseif ($uri === 'transaction/transport/print/pdf') {
     require_once '../src/queries/transaction_transport_queries.php';
     require_once '../src/functions/print_pdf_log_access_transport.php';
-}elseif ($uri === 'transaction/gate/print/pdf') {
+} elseif ($uri === 'transaction/gate/print/pdf') {
     require_once '../src/queries/transaction_gate_queries.php';
     require_once '../src/functions/print_pdf_log_access_gate.php';
-}elseif ($uri === 'transaction/class/print/pdf') {
+} elseif ($uri === 'transaction/class/print/pdf') {
     require_once '../src/queries/transaction_class_queries.php';
     require_once '../src/functions/print_pdf_log_access_class.php';
-}elseif ($uri === 'transaction/transport/print/excel') {
+} elseif ($uri === 'transaction/transport/print/excel') {
     require_once '../src/queries/transaction_transport_queries.php';
     require_once '../src/functions/print_excel_log_access_transport.php';
-}elseif ($uri === 'transaction/gate/print/excel') {
+} elseif ($uri === 'transaction/gate/print/excel') {
     require_once '../src/queries/transaction_gate_queries.php';
     require_once '../src/functions/print_excel_log_access_gate.php';
-}elseif ($uri === 'transaction/class/print/excel') {
+} elseif ($uri === 'transaction/class/print/excel') {
     require_once '../src/queries/transaction_class_queries.php';
     require_once '../src/functions/print_excel_log_access_class.php';
 } else {

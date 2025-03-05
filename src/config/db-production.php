@@ -1,9 +1,11 @@
-<?php 
+<?php
+$secret_key = "taiba@lmg";
+$server_name = "SmartEduCard Bukittinggi";
 
 $host = 'localhost';
 $dbname = 'taibacre_smartcard_app';
-$username = 'taibacre_smartcard_app';  
-$password = 'Bismillah@99';      
+$username = 'taibacre_smartcard_app';
+$password = 'Bismillah@99';
 
 try {
     $db = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

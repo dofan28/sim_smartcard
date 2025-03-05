@@ -98,11 +98,26 @@ function handleTransaction($db, $studentId)
 function createTransaction($db, $studentId)
 {
     $stmt = $db->prepare("INSERT INTO transactions (student_id, date, check_in, created_at, updated_at) VALUES (:student_id, :date, :check_in, NOW(), NOW())");
-    $stmt->execute([
+
+    $dateNow = date('Y-m-d');
+    $checkInNow = date('Y-m-d H:i:s');
+
+    $success = $stmt->execute([
         'student_id' => $studentId,
-        'date' => date('Y-m-d'),
-        'check_in' => date('Y-m-d H:i:s')
+        'date' => $dateNow,
+        'check_in' => $checkInNow
     ]);
+
+    if (!$success) {
+        return null;
+    }
+
+    $lastId = $db->lastInsertId();
+
+    $stmt = $db->prepare("SELECT * FROM transactions WHERE id = :id");
+    $stmt->execute(['id' => $lastId]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 function updateCheckout($db, $transactionId)
@@ -112,4 +127,8 @@ function updateCheckout($db, $transactionId)
         'check_out' => date('Y-m-d H:i:s'),
         'id' => $transactionId
     ]);
+
+    $stmt = $db->prepare("SELECT * FROM transactions WHERE id = :id");
+    $stmt->execute(['id' => $transactionId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }

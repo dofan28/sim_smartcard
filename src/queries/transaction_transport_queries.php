@@ -23,6 +23,89 @@ function getAllTransactionTransportJoinStudents($db)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getAllTransactionTransportJoinStudentPaginated($db, $limit, $offset, $search = '')
+{
+    $sql = "
+    SELECT transactions.id, transactions.student_id, transactions.date, 
+           transactions.check_in, transactions.check_out, students.full_name 
+    FROM transactions 
+    JOIN students ON transactions.student_id = students.id
+    WHERE transactions.type_transaction = 'transportation'
+    ";
+
+    if (!empty($search)) {
+        $sql .= " AND (
+                   transactions.id LIKE :search 
+                   OR transactions.date LIKE :search
+                   OR transactions.check_in LIKE :search
+                   OR transactions.check_out LIKE :search
+                   OR students.uid LIKE :search 
+                   OR students.nis LIKE :search 
+                   OR students.email LIKE :search 
+                   OR students.full_name LIKE :search 
+                   OR students.class LIKE :search 
+                   OR students.address LIKE :search 
+                   OR students.phone LIKE :search 
+                   OR students.status LIKE :search
+               )";
+    }
+
+    $sql .= " LIMIT :limit OFFSET :offset";
+
+    $stmt = $db->prepare($sql);
+
+    if (!empty($search)) {
+        $searchTerm = "%$search%";
+        $stmt->bindParam(":search", $searchTerm, PDO::PARAM_STR);
+    }
+
+    $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+    $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getTotalTransactionTransports($db, $search = '')
+{
+    $sql = "
+    SELECT COUNT(*) as total 
+    FROM transactions
+    JOIN students ON transactions.student_id = students.id
+    WHERE transactions.type_transaction = 'transportation'
+    ";
+
+    if (!empty($search)) {
+        $sql .= " AND (
+                   transactions.id LIKE :search 
+                   OR transactions.date LIKE :search
+                   OR transactions.check_in LIKE :search
+                   OR transactions.check_out LIKE :search
+                   OR students.uid LIKE :search 
+                   OR students.nis LIKE :search 
+                   OR students.email LIKE :search 
+                   OR students.full_name LIKE :search 
+                   OR students.class LIKE :search 
+                   OR students.address LIKE :search 
+                   OR students.phone LIKE :search 
+                   OR students.status LIKE :search
+               )";
+    }
+
+    $stmt = $db->prepare($sql);
+
+    if (!empty($search)) {
+        $searchTerm = "%$search%";
+        $stmt->bindParam(":search", $searchTerm, PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $result['total'];
+}
+
+
 function storeTransactionTransports($db, $student_id, $date, $check_in, $check_out)
 {
     $sql = "INSERT INTO transactions (student_id, type_transaction, date, check_in, check_out, created_at, updated_at) 
@@ -66,7 +149,7 @@ function deleteTransactionTransports($db, $id)
 function getTransactionTransportById($db, $id)
 {
     $sql = "
-        SELECT transactions.*, students.uid, students.full_name, students.nis, students.class, students.address, students.status
+        SELECT transactions.*, students.uid, students.full_name, students.nis, students.email, students.class, students.address,  students.phone, students.status
         FROM transactions
         JOIN students ON transactions.student_id = students.id
         WHERE transactions.id = :id
@@ -96,6 +179,15 @@ function createTransactionTransport($db, $studentId)
         'date' => date('Y-m-d'),
         'check_in' => date('Y-m-d H:i:s')
     ]);
+
+    // Ambil ID dari data yang baru saja dimasukkan
+    $lastId = $db->lastInsertId();
+
+    // Ambil kembali data berdasarkan ID terakhir
+    $stmt = $db->prepare("SELECT * FROM transactions WHERE id = :id");
+    $stmt->execute(['id' => $lastId]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 function updateCheckout($db, $transactionId)
@@ -105,4 +197,9 @@ function updateCheckout($db, $transactionId)
         'check_out' => date('Y-m-d H:i:s'),
         'id' => $transactionId
     ]);
+
+
+    $stmt = $db->prepare("SELECT * FROM transactions WHERE id = :id");
+    $stmt->execute(['id' => $transactionId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
